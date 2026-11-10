@@ -1,0 +1,93 @@
+/* Mobil uygulama hissi: alt sekme çubuğu, çekmece, dokunma hedefleri, sayfa geçişleri, "Ana ekrana ekle" bandı. */
+:root { --tabbar-h: 58px; --safe-b: env(safe-area-inset-bottom, 0px); --safe-t: env(safe-area-inset-top, 0px); }
+
+.tabbar, .drawer-scrim { display: none; }
+
+/* Sayfa geçişi (View Transitions API yoksa yedek) */
+@keyframes route-in { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+@keyframes vt-out { to { opacity: 0; transform: translateX(-18px); } }
+@keyframes vt-in { from { opacity: 0; transform: translateX(22px); } }
+@keyframes vt-fade-out { to { opacity: 0; } }
+@keyframes vt-fade-in { from { opacity: 0; } }
+.main.route-enter { animation: route-in .26s cubic-bezier(.2,.7,.2,1); }
+::view-transition-old(root) { animation: vt-fade-out .16s ease both; }
+::view-transition-new(root) { animation: vt-fade-in .2s ease both; }
+@media (prefers-reduced-motion: reduce) {
+  .main.route-enter { animation: none; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+
+/* "Ana ekrana ekle" bandı */
+.install-band { display: flex; align-items: center; gap: 14px; padding: 12px 14px 12px 16px; margin: 0 0 18px; border-radius: 16px; background: var(--surface-solid); border: 1px solid var(--border); box-shadow: var(--shadow); }
+.install-band .ib-ic { flex: none; width: 44px; height: 44px; border-radius: 11px; background: #1e5b43; color: #f6f3ec; display: grid; place-items: center; font: 600 1.45rem/1 var(--serif); }
+.install-band .ib-t { flex: 1; min-width: 0; font-size: .9rem; line-height: 1.4; }
+.install-band .ib-t b { display: block; font-size: .95rem; }
+.install-band .ib-t span { color: var(--muted); }
+.install-band .ib-share { display: inline-block; vertical-align: -3px; }
+.install-band .ib-x { flex: none; width: 44px; height: 44px; }
+
+@media (max-width: 760px) {
+  /* Alt sekme çubuğu — iOS tarzı, abartısız buzlu cam */
+  .tabbar {
+    display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+    padding: 4px max(6px, env(safe-area-inset-left, 0px)) calc(4px + var(--safe-b)) max(6px, env(safe-area-inset-right, 0px));
+    background: color-mix(in srgb, var(--surface-solid) 82%, transparent);
+    backdrop-filter: saturate(150%) blur(14px); -webkit-backdrop-filter: saturate(150%) blur(14px);
+    border-top: .5px solid var(--border);
+    view-transition-name: tabbar;
+  }
+  .tab-item {
+    flex: 1; min-width: 0; min-height: 50px; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    border: 0; background: none; padding: 4px 2px; border-radius: 12px; color: var(--muted); font-family: inherit; font-size: .68rem; font-weight: 500; line-height: 1.1; letter-spacing: 0; cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tab-item:hover { text-decoration: none; }
+  .tab-item svg { width: 25px; height: 25px; }
+  .tab-item.active { color: var(--primary); font-weight: 600; }
+  .tab-item.active svg { stroke-width: 2.2; }
+  .tab-item:active { background: var(--surface-2); }
+  .tab-l { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .tab-badge { position: absolute; top: 3px; left: calc(50% + 6px); min-width: 18px; height: 18px; padding: 0 5px; border-radius: 99px; background: var(--accent); color: #16150f; font-size: .66rem; font-weight: 700; line-height: 18px; text-align: center; box-shadow: 0 0 0 2px var(--surface-solid); }
+  .tab-item#tab-more[aria-expanded="true"] { color: var(--primary); }
+
+  /* İçerik alt çubuğun altında kalmasın */
+  .main { padding-bottom: calc(var(--tabbar-h) + var(--safe-b) + 28px); }
+  #toasts { left: 12px; right: 12px; bottom: calc(var(--tabbar-h) + var(--safe-b) + 12px); align-items: center; }
+
+  /* Sade üst çubuk */
+  .topbar { padding: var(--safe-t) 12px 0; height: calc(52px + var(--safe-t)); gap: 8px; view-transition-name: topbar; }
+  #menu-btn { display: none; }
+  .topbar .chip-stat + .chip-stat { display: none; }
+  .search, .topbar .search { display: block; flex: 1; min-width: 0; }
+  .search input { min-height: 40px; }
+
+  /* Çekmece (kenar çubuğu) + arka perde */
+  .sidebar { width: min(300px, 84vw); height: 100dvh; z-index: 70; visibility: hidden; transition: transform .26s cubic-bezier(.2,.7,.2,1), visibility 0s linear .26s; padding-bottom: calc(16px + var(--safe-b)); padding-top: calc(16px + var(--safe-t)); background: var(--surface-solid); touch-action: pan-y; }
+  .sidebar.open { visibility: visible; transition: transform .26s cubic-bezier(.2,.7,.2,1), visibility 0s; }
+  .sidebar.dragging { transition: none; }
+  .drawer-scrim { display: block; position: fixed; inset: 0; z-index: 65; background: rgba(22,21,15,.38); opacity: 0; pointer-events: none; transition: opacity .26s; }
+  body.drawer-open .drawer-scrim { opacity: 1; pointer-events: auto; }
+  body.drawer-open { overflow: hidden; }
+
+  /* Dokunma hedefleri ≥ 44px */
+  .btn, .icon-btn, .avatar-btn, .chip-stat, .tab, .dropdown a, .nav-item, .nav-course { min-height: 44px; }
+  .icon-btn { min-width: 44px; }
+  .btn { padding-top: 10px; padding-bottom: 10px; }
+  .nav-item, .nav-course { padding-top: 10px; padding-bottom: 10px; }
+  .dropdown a { display: flex; align-items: center; }
+  .chip-stat { padding: 0 12px; }
+  .tabs .tab { display: inline-flex; align-items: center; }
+  .modal-bg { align-items: end; padding: 0; }
+  .modal { max-height: 92dvh; border-radius: 22px 22px 0 0; padding-bottom: var(--safe-b); }
+
+  /* Sayfa geçişi: hafif yatay kayma */
+  ::view-transition-old(root) { animation: vt-out .2s ease both; }
+  ::view-transition-new(root) { animation: vt-in .26s cubic-bezier(.2,.7,.2,1) both; }
+
+  .install-band { margin: -4px 0 16px; }
+}
+@media (max-width: 760px) and (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }
+}
+/* Ana ekrandan açıldığında (standalone) */
+@media (display-mode: standalone) { .sidebar-foot { padding-bottom: calc(12px + var(--safe-b)); } }

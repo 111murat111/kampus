@@ -1,0 +1,60 @@
+/* Kaynak gösterimi (CC BY-SA 4.0): tüm sayfalarda kullanılan kutu/not + /sources sayfası (src-). */
+
+/* Tek satırlık kaynak notu */
+.src-note { margin: 14px 0 0; font-size: .78rem; line-height: 1.5; color: var(--muted); }
+.src-note a { color: inherit; text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 2px; }
+.src-note a:hover { color: var(--primary); text-decoration-color: currentColor; }
+
+/* Konu anlatımı altındaki kaynak kutusu */
+.src-box { display: flex; gap: 14px; align-items: baseline; margin-top: 22px; padding: 14px 16px; border-radius: 12px; background: var(--surface-2); font-size: .88rem; line-height: 1.55; max-width: none !important; }
+.src-box-k { flex: none; font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--warn); }
+.src-box p { margin: 0; color: var(--text); }
+.src-box a { text-decoration: underline; text-underline-offset: 2px; }
+
+/* Kenar çubuğu alt bilgisi */
+.sidebar-foot a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.sidebar-foot a:hover { color: var(--primary); }
+.sidebar-foot-links { display: block; margin-top: 6px; }
+
+/* ---- /sources ---- */
+.src { max-width: 980px; }
+.src-eyebrow { font-size: .74rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--warn); margin-bottom: 6px; }
+.src .page-head h1 { font-family: var(--serif); font-size: 2.1rem; letter-spacing: -.025em; margin-bottom: .25em; }
+.src .page-head p { max-width: 62ch; }
+.src-facts { display: grid; grid-template-columns: 2fr repeat(3, 1fr); gap: 0; margin: 0 0 30px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.src-facts div { padding: 14px 18px 14px 0; }
+.src-facts div + div { padding-left: 18px; border-left: 1px solid var(--border); }
+.src-facts dt { font-size: .76rem; color: var(--muted); font-weight: 600; }
+.src-facts dd { margin: 2px 0 0; font-family: var(--serif); font-size: 1.35rem; font-weight: 600; letter-spacing: -.01em; }
+.src-sec { margin-bottom: 34px; }
+.src-sec > h2, .src-sec-head h2 { font-size: 1.35rem; letter-spacing: -.02em; margin-bottom: 12px; }
+.src-sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.src-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.src-card { margin: 0 !important; display: flex; flex-direction: column; gap: 8px; }
+.src-card-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.src-card h3 { font-size: 1.15rem; margin: 0; }
+.src-card p { margin: 0; line-height: 1.55; }
+.src-card-links { margin-top: auto !important; padding-top: 6px; }
+.src-how { margin: 0; padding: 0; list-style: none; counter-reset: how; max-width: 74ch; }
+.src-how li { counter-increment: how; position: relative; padding: 12px 0 12px 42px; border-top: 1px solid var(--border); line-height: 1.6; }
+.src-how li:last-child { border-bottom: 1px solid var(--border); }
+.src-how li::before { content: counter(how); position: absolute; left: 0; top: 11px; width: 26px; height: 26px; border-radius: 50%; background: var(--primary-2); color: var(--primary); font-weight: 700; font-size: .82rem; display: grid; place-items: center; }
+.src-table-card { padding: 6px 10px; }
+.src-table { font-size: .9rem; }
+.src-table td { vertical-align: top; }
+.src-table .src-num { text-align: right; white-space: nowrap; color: var(--muted); font-size: .82rem; }
+.src-table .src-group th { background: transparent; font-family: var(--serif); font-size: 1rem; color: var(--text); padding-top: 18px; text-transform: none; letter-spacing: -.01em; }
+.src-table .src-group .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 8px; }
+.src-table tr.src-group:hover td, .src-table tr.src-group:hover th { background: transparent; }
+.src-legal p { max-width: 74ch; line-height: 1.65; }
+
+@media (max-width: 760px) {
+  .src .page-head h1 { font-size: 1.7rem; }
+  .src-facts { grid-template-columns: 1fr 1fr; }
+  .src-facts div:nth-child(3) { border-left: 0; padding-left: 0; }
+  .src-facts div:nth-child(n+3) { border-top: 1px solid var(--border); }
+  .src-cards { grid-template-columns: 1fr; }
+  .src-box { flex-direction: column; gap: 4px; }
+  .src-table .src-num { white-space: normal; }
+}
+.pr-ex-card .src-note { margin: 12px 0 14px; }
